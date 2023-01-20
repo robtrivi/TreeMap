@@ -114,10 +114,10 @@ public class HomeController implements Initializable {
         stackContainer.getChildren().clear();
         if (directory != null) {
             ArrayList<String> arr = new ArrayList<>();
-            createTreemap(directory, stackContainer.getWidth(), 550, arr);
+            createTreemap(directory, vbLabel.getWidth(), 550, arr);
             stackContainer.setOnMouseExited(e -> {
                 stackContainer.getChildren().clear();
-                createTreemap(directory, stackContainer.getWidth(), 550, arr);
+                createTreemap(directory, vbLabel.getWidth(), 550, arr);
             });
             checkFiltro.selectedProperty().addListener((observable, oldValue, newValue) -> {
                 if (newValue) {
