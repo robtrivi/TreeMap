@@ -60,7 +60,7 @@ public class Utils {
         } catch (IOException ex) {
 
         }
-        try ( FileInputStream input = new FileInputStream("src/main/resources/imagenes/unknownfile.png")) {
+        try ( FileInputStream input = new FileInputStream(App.rutaImagen + "unknownfile.png")) {
             Image img = new Image(input);
             imgview.setImage(img);
             imgview.setFitHeight(height);

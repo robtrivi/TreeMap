@@ -60,15 +60,13 @@ public class HomeController implements Initializable {
 
     private Stage stagePopUp = new Stage();
 
-    private static HashMap<String, Color> colors = new HashMap();
+    private HashMap<String, Color> colors = new HashMap();
 
-    private static HashMap<Integer, String> node_color = new HashMap();
+    private HashMap<Integer, String> node_color = new HashMap();
 
-    private static Tree<Archivo> directory;
+    private Tree<Archivo> directory;
 
-    private static Deque<Tree<Archivo>> dequeDirectory = new LinkedList();
-
-    private final Stack<String> rutasanteriores = new Stack<>();
+    private Deque<Tree<Archivo>> dequeDirectory = new LinkedList();
 
     private TreeMap tm;
 
@@ -89,6 +87,7 @@ public class HomeController implements Initializable {
         DirectoryChooser fc = new DirectoryChooser();
         File selectedFile = fc.showDialog(null);
         if (selectedFile != null) {
+            checkFiltro.setDisable(false);
             checkFiltro.setSelected(false);
             lbMasInfo.setVisible(true);
             colors.put("", Color.rgb(250, 250, 114));
