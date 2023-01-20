@@ -11,6 +11,7 @@ import com.edd.treemap.utils.Utils;
 import java.io.File;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.Deque;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.ResourceBundle;
@@ -65,6 +66,8 @@ public class HomeController implements Initializable {
 
     private static Tree<Archivo> directory;
 
+    private static Deque<Tree<Archivo>> dequeDirectory = new LinkedList();
+
     private final Stack<String> rutasanteriores = new Stack<>();
 
     private TreeMap tm;
@@ -86,8 +89,8 @@ public class HomeController implements Initializable {
         DirectoryChooser fc = new DirectoryChooser();
         File selectedFile = fc.showDialog(null);
         if (selectedFile != null) {
-        checkFiltro.setSelected(false);
-        lbMasInfo.setVisible(true);
+            checkFiltro.setSelected(false);
+            lbMasInfo.setVisible(true);
             colors.put("", Color.rgb(250, 250, 114));
             tm = new TreeMap(selectedFile);
             vbLabel.setVisible(true);
@@ -209,10 +212,14 @@ public class HomeController implements Initializable {
         exploBox.setStyle("-fx-background-color: WHITE");
         exploBox.setPadding(new Insets(5, 5, 5, 5));
         Button back = new Button("Volver");
+        back.setDisable(true);
         back.setOnMouseClicked(mc -> {
-            searchPath(rutasanteriores.pop(), back, exploBox);
+            dequeDirectory.pop();
+            if (!dequeDirectory.isEmpty()) {
+                searchPath(dequeDirectory.pop(), back, exploBox);
+            }
         });
-        searchPath(ruta.getText(), back, exploBox);
+        searchPath(directory, back, exploBox);
         contenido.setContent(exploBox);
         root.getChildren().addAll(back, contenido);
         root.setSpacing(5);
@@ -223,33 +230,27 @@ public class HomeController implements Initializable {
         stage.show();
     }
 
-    private void searchPath(String path, Button back, VBox explorador) {
-        if (!rutasanteriores.isEmpty()) {
+    private void searchPath(Tree<Archivo> path, Button back, VBox explorador) {
+        if (path != directory) {
             back.setDisable(false);
-        } else {
+        }else{
             back.setDisable(true);
         }
         explorador.getChildren().clear();
-        File f = new File(path);
-        String[] archivos = f.list();
-
-        try {
-            for (String archivo : archivos) {
-                Label nombrearchivo = new Label(archivo);
-                nombrearchivo.setFont(new Font("System", 14));
-                String extension = Utils.getExtension(archivo);
-                ImageView imgview = Utils.getImage(extension + ".png", 20, 20);
-                HBox archivoBox = new HBox(imgview, nombrearchivo);
+        dequeDirectory.push(path);
+        for (Tree<Archivo> file : path.getRoot().getChildren()) {
+            Label nombrearchivo = new Label(file.getRoot().getContent().getName());
+            nombrearchivo.setFont(new Font("System", 14));
+            ImageView imgview = Utils.getImage(file.getRoot().getContent().getExtension() + ".png", 20, 20);
+            HBox archivoBox = new HBox(imgview, nombrearchivo);
+            if (file.getRoot().getContent().isDirectory()) {
                 archivoBox.setOnMouseClicked(mc -> {
-                    rutasanteriores.push(path);
-                    searchPath(path + "/" + nombrearchivo.getText(), back, explorador);
+                    searchPath(file, back, explorador);
                 });
-                archivoBox.setSpacing(5);
-                archivoBox.setPadding(new Insets(3, 3, 3, 3));
-                explorador.getChildren().add(archivoBox);
             }
-        } catch (RuntimeException e) {
-
+            archivoBox.setSpacing(5);
+            archivoBox.setPadding(new Insets(3, 3, 3, 3));
+            explorador.getChildren().add(archivoBox);
         }
     }
 
