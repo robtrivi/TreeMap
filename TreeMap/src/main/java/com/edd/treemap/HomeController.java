@@ -79,7 +79,14 @@ public class HomeController implements Initializable {
      */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-
+        colors.put("pdf", Color.rgb(255, 113, 113));
+        colors.put("docx", Color.rgb(66, 115, 255));
+        colors.put("xlsx", Color.rgb(113, 255, 124));
+        colors.put("pptx", Color.rgb(255, 190, 113));
+        colors.put("jpeg", Color.rgb(201, 255, 113));
+        colors.put("jpg", Color.rgb(255, 238, 113));
+        colors.put("png", Color.rgb(150, 130, 160));
+        colors.put("txt", Color.rgb(103, 194, 195));
     }
 
     @FXML
@@ -268,7 +275,7 @@ public class HomeController implements Initializable {
         lbpeso.setWrapText(true);
         ImageView imgview = Utils.getImage(a.getExtension() + ".png", 40, 40);
         root.getChildren().addAll(lbarchivo, lbpeso, imgview);
-        Scene scene = new Scene(root, 400, 150);
+        Scene scene = new Scene(root);
         return scene;
     }
 }
