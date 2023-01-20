@@ -50,8 +50,8 @@ public class Utils {
     }
 
     public static ImageView getImage(String ruta, int height, int width) {
-        ImageView imgview = new ImageView();
         try ( FileInputStream input = new FileInputStream(App.rutaImagen + ruta)) {
+            ImageView imgview = new ImageView();
             Image img = new Image(input);
             imgview.setImage(img);
             imgview.setFitHeight(height);
@@ -60,15 +60,7 @@ public class Utils {
         } catch (IOException ex) {
 
         }
-        try ( FileInputStream input = new FileInputStream(App.rutaImagen + "unknownfile.png")) {
-            Image img = new Image(input);
-            imgview.setImage(img);
-            imgview.setFitHeight(height);
-            imgview.setFitWidth(width);
-        } catch (IOException ex) {
-
-        }
-        return imgview;
+        return getImage("unknownfile.png", height, width);
     }
 
     public static String obtenerConversion(double s) {
@@ -96,11 +88,11 @@ public class Utils {
         if (i > p) {
             extension = path.substring(i + 1);
         }
-        
+
         if (extension.isEmpty()) {
             return "carpeta";
         }
-        
+
         return extension;
     }
 
